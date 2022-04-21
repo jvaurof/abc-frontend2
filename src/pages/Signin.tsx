@@ -1,12 +1,5 @@
-import {
-  Button,
-  Flex,
-  FormControl,
-  FormLabel,
-  Heading,
-  Input,
-  Stack
-} from '@chakra-ui/react'
+import { Button, Flex, Heading, Stack } from '@chakra-ui/react'
+import { Input } from '../components/Form/Input'
 
 export function Signin() {
   return (
@@ -21,14 +14,8 @@ export function Signin() {
         spacing="4"
       >
         <Heading>Entrar</Heading>
-        <FormControl>
-          <FormLabel htmlFor="login">Login</FormLabel>
-          <Input id="login" borderColor="gray.400" />
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="password">Senha</FormLabel>
-          <Input id="password" type="password" borderColor="gray.400" />
-        </FormControl>
+        <Input name="login" label="Login" />
+        <Input name="password" label="Senha" type="password" />
         <Button type="submit" colorScheme="blue">
           Entrar
         </Button>
