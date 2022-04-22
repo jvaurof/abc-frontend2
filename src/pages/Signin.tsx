@@ -1,10 +1,18 @@
-import { Button, Flex, Heading, Stack } from '@chakra-ui/react'
+import {
+  Button,
+  Flex,
+  Heading,
+  Stack,
+  Link as ChakraLink
+} from '@chakra-ui/react'
+import { Link } from 'react-router-dom'
 import { Input } from '../components/Form/Input'
 
 export function Signin() {
   return (
     <Flex width="100vw" height="100vh" justify="center" align="center">
       <Stack
+        as="form"
         width="100%"
         maxWidth={360}
         background="white"
@@ -19,6 +27,9 @@ export function Signin() {
         <Button type="submit" colorScheme="blue">
           Entrar
         </Button>
+        <ChakraLink to="/signup" as={Link} textAlign="center">
+          Criar conta
+        </ChakraLink>
       </Stack>
     </Flex>
   )
