@@ -31,17 +31,13 @@ export function Signup() {
           </Stack>
         </RadioGroup>
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
-          <Input name="name" label="Nome" />
-          <Input name="login" label="Login" />
-          <Input name="password" label="Senha" type="password" />
-          <Input
-            name="confirmPassword"
-            label="Confirmar Senha"
-            type="password"
-          />
-          <Input name="phone" label="Telefone" type="phone" />
-          <Input name="cpf" label="CPF" />
-          <Input name="rg" label="RG" />
+          <Input id="name" label="Nome" />
+          <Input id="login" label="Login" />
+          <Input id="password" label="Senha" type="password" />
+          <Input id="confirmPassword" label="Confirmar Senha" type="password" />
+          <Input id="phone" label="Telefone" type="phone" />
+          <Input id="cpf" label="CPF" />
+          <Input id="rg" label="RG" />
         </SimpleGrid>
         <Button type="submit" colorScheme="blue">
           Cadastrar
