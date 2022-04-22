@@ -11,7 +11,7 @@ import { Input } from '../components/Form/Input'
 
 export function Signup() {
   return (
-    <Flex width="100vw" height="100vh" justify="center" align="center">
+    <Flex width="100%" height="100%" justify="center" py="10">
       <Stack
         width="100%"
         maxWidth={500}
