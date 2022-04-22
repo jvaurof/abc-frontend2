@@ -1,15 +1,22 @@
 import {
+  Alert,
+  AlertIcon,
   Button,
+  CloseButton,
   Flex,
   Heading,
   Radio,
   RadioGroup,
   SimpleGrid,
-  Stack
+  Stack,
+  Slide,
+  Link as ChakraLink
 } from '@chakra-ui/react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useDisclosure } from '@chakra-ui/hooks'
+import { Link } from 'react-router-dom'
 import { Input } from '../components/Form/Input'
 
 interface FieldProps {
@@ -39,79 +46,103 @@ export function Signup() {
   const { register, handleSubmit, formState } = useForm<FieldProps>({
     resolver: yupResolver(formSchema)
   })
-
   const { errors } = formState
+  const { isOpen, onToggle } = useDisclosure()
 
   const handleSignUp: SubmitHandler<FieldProps> = values => {
     console.log(values)
+    onToggle()
   }
 
   return (
-    <Flex width="100%" height="100%" justify="center" py="10">
-      <Stack
-        as="form"
-        width="100%"
-        maxWidth={500}
-        background="white"
-        boxShadow="2xl"
-        borderRadius="lg"
-        padding="8"
-        mx="4"
-        spacing="6"
-        onSubmit={handleSubmit(handleSignUp)}
-      >
-        <Heading>Cadastre-se</Heading>
-        <RadioGroup>
-          <Stack direction="row">
-            <Radio value="1">Pessoa Física</Radio>
-            <Radio value="2">Pessoa Jurídica</Radio>
-          </Stack>
-        </RadioGroup>
-        <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
-          <Input
-            id="name"
-            label="Nome"
-            errors={errors.name}
-            register={register}
-          />
-          <Input
-            id="login"
-            label="Login"
-            errors={errors.login}
-            register={register}
-          />
-          <Input
-            id="password"
-            label="Senha"
-            type="password"
-            errors={errors.password}
-            register={register}
-          />
-          <Input
-            id="confirmPassword"
-            label="Confirmar Senha"
-            type="password"
-            errors={errors.confirmPassword}
-            register={register}
-          />
-          <Input
-            id="phone"
-            label="Telefone"
-            type="phone"
-            errors={errors.phone}
-            register={register}
-          />
-          <Input id="cpf" label="CPF" errors={errors.cpf} register={register} />
-          <Input id="rg" label="RG" errors={errors.rg} register={register} />
-        </SimpleGrid>
-        <Button
-          type="submit"
-          isLoading={formState.isSubmitting}
-          colorScheme="blue"
+    <>
+      <Flex width="100%" height="100%" justify="center" py="10">
+        <Stack
+          as="form"
+          width="100%"
+          maxWidth={500}
+          background="white"
+          boxShadow="2xl"
+          borderRadius="lg"
+          padding="8"
+          mx="4"
+          spacing="6"
+          onSubmit={handleSubmit(handleSignUp)}
         >
-          Cadastrar
-        </Button>
-      </Stack>
-    </Flex>
+          <Heading>Cadastre-se</Heading>
+          <RadioGroup>
+            <Stack direction="row">
+              <Radio value="1">Pessoa Física</Radio>
+              <Radio value="2">Pessoa Jurídica</Radio>
+            </Stack>
+          </RadioGroup>
+          <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+            <Input
+              id="name"
+              label="Nome"
+              errors={errors.name}
+              register={register}
+            />
+            <Input
+              id="login"
+              label="Login"
+              errors={errors.login}
+              register={register}
+            />
+            <Input
+              id="password"
+              label="Senha"
+              type="password"
+              errors={errors.password}
+              register={register}
+            />
+            <Input
+              id="confirmPassword"
+              label="Confirmar Senha"
+              type="password"
+              errors={errors.confirmPassword}
+              register={register}
+            />
+            <Input
+              id="phone"
+              label="Telefone"
+              type="phone"
+              errors={errors.phone}
+              register={register}
+            />
+            <Input
+              id="cpf"
+              label="CPF"
+              errors={errors.cpf}
+              register={register}
+            />
+            <Input id="rg" label="RG" errors={errors.rg} register={register} />
+          </SimpleGrid>
+          <Button
+            type="submit"
+            isLoading={formState.isSubmitting}
+            colorScheme="blue"
+          >
+            Cadastrar
+          </Button>
+        </Stack>
+      </Flex>
+
+      <Slide direction="bottom" in={isOpen} style={{ zIndex: 10 }}>
+        <Alert status="success" display="flex" justifyContent="center">
+          <AlertIcon />
+          Cadastro realizado com sucesso!
+          <ChakraLink to="/" as={Link} mx="1">
+            Clique aqui
+          </ChakraLink>
+          para ir para página de Login
+          <CloseButton onClick={() => onToggle()} />
+        </Alert>
+        <Alert status="error">
+          <AlertIcon />
+          There was an error processing your request
+        </Alert>
+      </Slide>
+    </>
   )
 }
