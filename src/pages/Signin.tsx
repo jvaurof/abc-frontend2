@@ -7,6 +7,8 @@ import {
 } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { Input } from '../components/Form/Input'
 
 interface FieldProps {
@@ -14,8 +16,17 @@ interface FieldProps {
   password: string
 }
 
+const formSchema = yup.object().shape({
+  login: yup.string().required('O campo Login é obrigatório'),
+  password: yup.string().required('O campo Senha é obrigatório')
+})
+
 export function Signin() {
-  const { register, handleSubmit, formState } = useForm<FieldProps>()
+  const { register, handleSubmit, formState } = useForm<FieldProps>({
+    resolver: yupResolver(formSchema)
+  })
+
+  const { errors } = formState
 
   const handleSignIn: SubmitHandler<FieldProps> = values => {
     console.log(values)
@@ -35,12 +46,18 @@ export function Signin() {
         onSubmit={handleSubmit(handleSignIn)}
       >
         <Heading>Entrar</Heading>
-        <Input id="login" label="Login" register={register} />
+        <Input
+          id="login"
+          label="Login"
+          errors={errors.login}
+          register={register}
+        />
         <Input
           id="password"
           label="Senha"
-          register={register}
           type="password"
+          errors={errors.password}
+          register={register}
         />
         <Button
           type="submit"

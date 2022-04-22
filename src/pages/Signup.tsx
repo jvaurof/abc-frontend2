@@ -7,9 +7,12 @@ import {
   SimpleGrid,
   Stack
 } from '@chakra-ui/react'
+import { useForm } from 'react-hook-form'
 import { Input } from '../components/Form/Input'
 
 export function Signup() {
+  const { register } = useForm()
+
   return (
     <Flex width="100%" height="100%" justify="center" py="10">
       <Stack
@@ -31,13 +34,23 @@ export function Signup() {
           </Stack>
         </RadioGroup>
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
-          <Input id="name" label="Nome" />
-          <Input id="login" label="Login" />
-          <Input id="password" label="Senha" type="password" />
-          <Input id="confirmPassword" label="Confirmar Senha" type="password" />
-          <Input id="phone" label="Telefone" type="phone" />
-          <Input id="cpf" label="CPF" />
-          <Input id="rg" label="RG" />
+          <Input id="name" label="Nome" register={register} />
+          <Input id="login" label="Login" register={register} />
+          <Input
+            id="password"
+            label="Senha"
+            type="password"
+            register={register}
+          />
+          <Input
+            id="confirmPassword"
+            label="Confirmar Senha"
+            type="password"
+            register={register}
+          />
+          <Input id="phone" label="Telefone" type="phone" register={register} />
+          <Input id="cpf" label="CPF" register={register} />
+          <Input id="rg" label="RG" register={register} />
         </SimpleGrid>
         <Button type="submit" colorScheme="blue">
           Cadastrar
