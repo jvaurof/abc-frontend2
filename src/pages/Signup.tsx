@@ -1,4 +1,12 @@
-import { Button, Flex, Heading, SimpleGrid, Stack } from '@chakra-ui/react'
+import {
+  Button,
+  Flex,
+  Heading,
+  Radio,
+  RadioGroup,
+  SimpleGrid,
+  Stack
+} from '@chakra-ui/react'
 import { Input } from '../components/Form/Input'
 
 export function Signup() {
@@ -16,6 +24,12 @@ export function Signup() {
         as="form"
       >
         <Heading>Cadastre-se</Heading>
+        <RadioGroup>
+          <Stack direction="row">
+            <Radio value="1">Pessoa Física</Radio>
+            <Radio value="2">Pessoa Jurídica</Radio>
+          </Stack>
+        </RadioGroup>
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
           <Input name="name" label="Nome" />
           <Input name="login" label="Login" />
