@@ -104,7 +104,11 @@ export function Signup() {
           <Input id="cpf" label="CPF" errors={errors.cpf} register={register} />
           <Input id="rg" label="RG" errors={errors.rg} register={register} />
         </SimpleGrid>
-        <Button type="submit" colorScheme="blue">
+        <Button
+          type="submit"
+          isLoading={formState.isSubmitting}
+          colorScheme="blue"
+        >
           Cadastrar
         </Button>
       </Stack>
