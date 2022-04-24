@@ -50,6 +50,7 @@ export function Header({ onOpenDeleteAlert }: HeaderProps) {
         <Button
           as={Link}
           to="/signup"
+          state={{ isEditing: false }}
           size="sm"
           leftIcon={<Icon as={RiAddLine} fontSize="md" />}
         >

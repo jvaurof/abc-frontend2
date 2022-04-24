@@ -11,6 +11,7 @@ import {
   Tr
 } from '@chakra-ui/react'
 import { RiPencilLine, RiEyeLine } from 'react-icons/ri'
+import { Link } from 'react-router-dom'
 
 interface MyTableProps {
   onOpenViewPerson: () => void
@@ -46,6 +47,9 @@ export function MyTable({ onOpenViewPerson }: MyTableProps) {
                 Visualizar
               </Button>
               <Button
+                as={Link}
+                to="/signup"
+                state={{ isEditing: true }}
                 size="sm"
                 leftIcon={<Icon as={RiPencilLine} fontSize="md" />}
               >

@@ -16,8 +16,9 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useDisclosure } from '@chakra-ui/hooks'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Input } from '../components/Form/Input'
+import { useEffect } from 'react'
 
 interface FieldProps {
   name: string
@@ -27,6 +28,10 @@ interface FieldProps {
   phone: string
   cpf: string
   rg: string
+}
+
+interface LocationStateProps {
+  isEditing: boolean
 }
 
 const formSchema = yup.object().shape({
@@ -43,16 +48,31 @@ const formSchema = yup.object().shape({
 })
 
 export function Signup() {
-  const { register, handleSubmit, formState } = useForm<FieldProps>({
+  const { register, handleSubmit, formState, setValue } = useForm<FieldProps>({
     resolver: yupResolver(formSchema)
   })
   const { errors } = formState
   const { isOpen, onToggle } = useDisclosure()
+  const location = useLocation()
+  const state = location.state as LocationStateProps
 
   const handleSignUp: SubmitHandler<FieldProps> = values => {
     console.log(values)
     onToggle()
   }
+
+  useEffect(() => {
+    if (state && state.isEditing) {
+      setValue('name', 'abc')
+      setValue('login', 'log')
+      setValue('password', '123')
+      setValue('confirmPassword', '123')
+      setValue('phone', '1235')
+      setValue('rg', '999')
+      setValue('cpf', '544')
+    }
+    console.log('2')
+  }, [state, setValue])
 
   return (
     <>
