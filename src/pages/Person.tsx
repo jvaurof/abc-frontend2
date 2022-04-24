@@ -14,16 +14,33 @@ import {
   Tr,
   useDisclosure
 } from '@chakra-ui/react'
-import { RiAddLine, RiPencilLine, RiDeleteBin4Line } from 'react-icons/ri'
+import {
+  RiAddLine,
+  RiPencilLine,
+  RiDeleteBin4Line,
+  RiEyeLine
+} from 'react-icons/ri'
 import { Link } from 'react-router-dom'
 import { DeleteAlert } from '../components/Modal/DeleteAlert'
+import { ViewPerson } from '../components/Modal/ViewPerson'
 
 export function Person() {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const {
+    isOpen: isOpenDeleteAlert,
+    onOpen: onOpenDeleteAlert,
+    onClose: onCloseDeleteAlert
+  } = useDisclosure()
+
+  const {
+    isOpen: isOpenViewPerson,
+    onOpen: onOpenViewPerson,
+    onClose: onCloseViewPerson
+  } = useDisclosure()
 
   return (
     <>
-      <DeleteAlert onClose={onClose} isOpen={isOpen} />
+      <DeleteAlert onClose={onCloseDeleteAlert} isOpen={isOpenDeleteAlert} />
+      <ViewPerson onClose={onCloseViewPerson} isOpen={isOpenViewPerson} />
       <Flex width="100%" height="100%" justify="center" py="10">
         <Box
           bg="white"
@@ -35,14 +52,24 @@ export function Person() {
         >
           <Flex justify="space-between" align="center">
             <Heading>Pessoa Física</Heading>
-            <Button
-              as={Link}
-              to="/signup"
-              size="sm"
-              leftIcon={<Icon as={RiAddLine} fontSize="md" />}
-            >
-              Cadastrar novo
-            </Button>
+            <Stack direction="row">
+              <Button
+                as={Link}
+                to="/signup"
+                size="sm"
+                leftIcon={<Icon as={RiAddLine} fontSize="md" />}
+              >
+                Cadastrar novo
+              </Button>
+              <Button
+                as="a"
+                size="sm"
+                onClick={onOpenDeleteAlert}
+                leftIcon={<Icon as={RiDeleteBin4Line} fontSize="md" />}
+              >
+                Excluir
+              </Button>
+            </Stack>
           </Flex>
           <Table>
             <Thead>
@@ -67,92 +94,17 @@ export function Person() {
                     <Button
                       as="a"
                       size="sm"
-                      leftIcon={<Icon as={RiPencilLine} fontSize="md" />}
+                      onClick={onOpenViewPerson}
+                      leftIcon={<Icon as={RiEyeLine} fontSize="md" />}
                     >
-                      Editar
+                      Visualizar
                     </Button>
-                    <Button
-                      as="a"
-                      size="sm"
-                      leftIcon={<Icon as={RiDeleteBin4Line} fontSize="md" />}
-                    >
-                      Excluir
-                    </Button>
-                  </Stack>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>
-                  <Checkbox borderColor="gray.600" />
-                </Td>
-                <Td>João Marcos</Td>
-                <Td>24 de abril de 2022</Td>
-                <Td>
-                  <Stack direction="row">
                     <Button
                       as="a"
                       size="sm"
                       leftIcon={<Icon as={RiPencilLine} fontSize="md" />}
                     >
                       Editar
-                    </Button>
-                    <Button
-                      as="a"
-                      size="sm"
-                      onClick={onOpen}
-                      leftIcon={<Icon as={RiDeleteBin4Line} fontSize="md" />}
-                    >
-                      Excluir a
-                    </Button>
-                  </Stack>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>
-                  <Checkbox borderColor="gray.600" />
-                </Td>
-                <Td>João Marcos</Td>
-                <Td>24 de abril de 2022</Td>
-                <Td>
-                  <Stack direction="row">
-                    <Button
-                      as="a"
-                      size="sm"
-                      leftIcon={<Icon as={RiPencilLine} fontSize="md" />}
-                    >
-                      Editar
-                    </Button>
-                    <Button
-                      as="a"
-                      size="sm"
-                      leftIcon={<Icon as={RiDeleteBin4Line} fontSize="md" />}
-                    >
-                      Excluir
-                    </Button>
-                  </Stack>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>
-                  <Checkbox borderColor="gray.600" />
-                </Td>
-                <Td>João Marcos</Td>
-                <Td>24 de abril de 2022</Td>
-                <Td>
-                  <Stack direction="row">
-                    <Button
-                      as="a"
-                      size="sm"
-                      leftIcon={<Icon as={RiPencilLine} fontSize="md" />}
-                    >
-                      Editar
-                    </Button>
-                    <Button
-                      as="a"
-                      size="sm"
-                      leftIcon={<Icon as={RiDeleteBin4Line} fontSize="md" />}
-                    >
-                      Excluir
                     </Button>
                   </Stack>
                 </Td>
