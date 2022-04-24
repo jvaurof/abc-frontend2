@@ -5,6 +5,10 @@ import {
   Flex,
   Heading,
   Icon,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
   Stack,
   Table,
   Tbody,
@@ -14,11 +18,13 @@ import {
   Tr,
   useDisclosure
 } from '@chakra-ui/react'
+import { useState } from 'react'
 import {
   RiAddLine,
   RiPencilLine,
   RiDeleteBin4Line,
-  RiEyeLine
+  RiEyeLine,
+  RiSearchLine
 } from 'react-icons/ri'
 import { Link } from 'react-router-dom'
 import { DeleteAlert } from '../components/Modal/DeleteAlert'
@@ -37,6 +43,8 @@ export function Person() {
     onClose: onCloseViewPerson
   } = useDisclosure()
 
+  const [search, setSearch] = useState('')
+
   return (
     <>
       <DeleteAlert onClose={onCloseDeleteAlert} isOpen={isOpenDeleteAlert} />
@@ -50,8 +58,32 @@ export function Person() {
           p="8"
           borderRadius="md"
         >
-          <Flex justify="space-between" align="center">
-            <Heading>Pessoa Física</Heading>
+          <Stack direction="row" spacing="16">
+            <Heading>Pessoa</Heading>
+
+            <InputGroup>
+              <InputLeftElement pointerEvents="none">
+                <Icon as={RiSearchLine} fontSize="md" />
+              </InputLeftElement>
+              <Input
+                type="search"
+                placeholder="Nome"
+                onChange={event => setSearch(event.target.value)}
+              />
+              <InputRightElement width="4.5rem" mr="1">
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    if (search === '') return
+
+                    console.log(search)
+                  }}
+                >
+                  Buscar
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+
             <Stack direction="row">
               <Button
                 as={Link}
@@ -62,7 +94,6 @@ export function Person() {
                 Cadastrar novo
               </Button>
               <Button
-                as="a"
                 size="sm"
                 onClick={onOpenDeleteAlert}
                 leftIcon={<Icon as={RiDeleteBin4Line} fontSize="md" />}
@@ -70,8 +101,8 @@ export function Person() {
                 Excluir
               </Button>
             </Stack>
-          </Flex>
-          <Table>
+          </Stack>
+          <Table mt="10">
             <Thead>
               <Tr>
                 <Th>
@@ -92,7 +123,6 @@ export function Person() {
                 <Td>
                   <Stack direction="row">
                     <Button
-                      as="a"
                       size="sm"
                       onClick={onOpenViewPerson}
                       leftIcon={<Icon as={RiEyeLine} fontSize="md" />}
@@ -100,7 +130,6 @@ export function Person() {
                       Visualizar
                     </Button>
                     <Button
-                      as="a"
                       size="sm"
                       leftIcon={<Icon as={RiPencilLine} fontSize="md" />}
                     >
