@@ -71,7 +71,6 @@ export function Signup() {
       setValue('rg', '999')
       setValue('cpf', '544')
     }
-    console.log('2')
   }, [state, setValue])
 
   return (
@@ -138,13 +137,25 @@ export function Signup() {
             />
             <Input id="rg" label="RG" errors={errors.rg} register={register} />
           </SimpleGrid>
-          <Button
-            type="submit"
-            isLoading={formState.isSubmitting}
-            colorScheme="blue"
-          >
-            Cadastrar
-          </Button>
+          <Stack direction="row">
+            <Button
+              as={Link}
+              to="/person"
+              isLoading={formState.isSubmitting}
+              colorScheme="blue"
+              flex={1}
+            >
+              Cancelar
+            </Button>
+            <Button
+              type="submit"
+              isLoading={formState.isSubmitting}
+              colorScheme="blue"
+              flex={1}
+            >
+              Salvar
+            </Button>
+          </Stack>
         </Stack>
       </Flex>
 

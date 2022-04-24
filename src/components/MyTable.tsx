@@ -17,6 +17,19 @@ interface MyTableProps {
   onOpenViewPerson: () => void
 }
 
+const people = [
+  {
+    id: '123',
+    name: 'John',
+    date: '24/04/1993'
+  },
+  {
+    id: '1235',
+    name: 'John',
+    date: '24/04/1993'
+  }
+]
+
 export function MyTable({ onOpenViewPerson }: MyTableProps) {
   return (
     <Table mt="10">
@@ -31,33 +44,35 @@ export function MyTable({ onOpenViewPerson }: MyTableProps) {
         </Tr>
       </Thead>
       <Tbody>
-        <Tr>
-          <Td>
-            <Checkbox borderColor="gray.600" />
-          </Td>
-          <Td>João Marcos</Td>
-          <Td>24 de abril de 2022</Td>
-          <Td>
-            <Stack direction="row">
-              <Button
-                size="sm"
-                onClick={onOpenViewPerson}
-                leftIcon={<Icon as={RiEyeLine} fontSize="md" />}
-              >
-                Visualizar
-              </Button>
-              <Button
-                as={Link}
-                to="/signup"
-                state={{ isEditing: true }}
-                size="sm"
-                leftIcon={<Icon as={RiPencilLine} fontSize="md" />}
-              >
-                Editar
-              </Button>
-            </Stack>
-          </Td>
-        </Tr>
+        {people.map(person => (
+          <Tr key={person.id}>
+            <Td>
+              <Checkbox borderColor="gray.600" />
+            </Td>
+            <Td>{person.name}</Td>
+            <Td>{person.date}</Td>
+            <Td>
+              <Stack direction="row">
+                <Button
+                  size="sm"
+                  onClick={onOpenViewPerson}
+                  leftIcon={<Icon as={RiEyeLine} fontSize="md" />}
+                >
+                  Visualizar
+                </Button>
+                <Button
+                  as={Link}
+                  to="/signup"
+                  state={{ isEditing: true }}
+                  size="sm"
+                  leftIcon={<Icon as={RiPencilLine} fontSize="md" />}
+                >
+                  Editar
+                </Button>
+              </Stack>
+            </Td>
+          </Tr>
+        ))}
       </Tbody>
     </Table>
   )
