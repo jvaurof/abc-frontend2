@@ -32,7 +32,7 @@ const people = [
 
 export function MyTable({ onOpenViewPerson }: MyTableProps) {
   return (
-    <Table mt="10">
+    <Table>
       <Thead>
         <Tr>
           <Th>
