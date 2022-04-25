@@ -9,8 +9,7 @@ import {
   RadioGroup,
   SimpleGrid,
   Stack,
-  Slide,
-  Link as ChakraLink
+  Slide
 } from '@chakra-ui/react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import * as yup from 'yup'
@@ -18,7 +17,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Link, useLocation } from 'react-router-dom'
 import { Input } from '../components/Form/Input'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { api } from '../services/api'
 
 interface FieldProps {
   name: string
@@ -28,6 +28,7 @@ interface FieldProps {
   phone: string
   cpf: string
   rg: string
+  person_type: string
 }
 
 interface LocationStateProps {
@@ -55,9 +56,11 @@ export function Signup() {
   const { isOpen, onToggle } = useDisclosure()
   const location = useLocation()
   const state = location.state as LocationStateProps
+  const [statusResponse, setStatusResponse] = useState(0)
 
-  const handleSignUp: SubmitHandler<FieldProps> = values => {
-    console.log(values)
+  const handleSignUp: SubmitHandler<FieldProps> = async values => {
+    const response = await api.post('/person', values)
+    setStatusResponse(response.status)
     onToggle()
   }
 
@@ -89,12 +92,18 @@ export function Signup() {
           onSubmit={handleSubmit(handleSignUp)}
         >
           <Heading>Cadastre-se</Heading>
-          <RadioGroup>
+
+          <RadioGroup defaultValue={state.isEditing ? 'natural' : 'natural'}>
             <Stack direction="row">
-              <Radio value="1">Pessoa Física</Radio>
-              <Radio value="2">Pessoa Jurídica</Radio>
+              <Radio value="natural" {...register('person_type')}>
+                Pessoa Física
+              </Radio>
+              <Radio value="juridical" {...register('person_type')}>
+                Pessoa Jurídica
+              </Radio>
             </Stack>
           </RadioGroup>
+
           <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
             <Input
               id="name"
@@ -160,19 +169,21 @@ export function Signup() {
       </Flex>
 
       <Slide direction="bottom" in={isOpen} style={{ zIndex: 10 }}>
-        <Alert status="success" display="flex" justifyContent="center">
-          <AlertIcon />
-          Cadastro realizado com sucesso!
-          <ChakraLink to="/" as={Link} mx="1">
-            Clique aqui
-          </ChakraLink>
-          para ir para página de Login
-          <CloseButton onClick={() => onToggle()} />
-        </Alert>
-        <Alert status="error">
-          <AlertIcon />
-          There was an error processing your request
-        </Alert>
+        {statusResponse === 200 && (
+          <Alert status="success" display="flex" justifyContent="center">
+            <AlertIcon />
+            Cadastro realizado com sucesso.
+            <CloseButton onClick={() => onToggle()} />
+          </Alert>
+        )}
+
+        {statusResponse !== 200 && (
+          <Alert status="error">
+            <AlertIcon />
+            There was an error processing your request
+            <CloseButton onClick={() => onToggle()} />
+          </Alert>
+        )}
       </Slide>
     </>
   )
