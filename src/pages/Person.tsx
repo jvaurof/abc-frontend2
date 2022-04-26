@@ -1,17 +1,10 @@
-import {
-  Alert,
-  AlertIcon,
-  CloseButton,
-  Flex,
-  Slide,
-  Stack,
-  useDisclosure
-} from '@chakra-ui/react'
+import { Flex, Stack, useDisclosure } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Header } from '../components/Person/Header'
 import { DataTable } from '../components/Person/DataTable'
 import { Pagination } from '../components/Person/Pagination'
+import { Success } from '../components/Alert/Success'
 
 interface LocationStateProps {
   isCreated: boolean
@@ -46,15 +39,11 @@ export function Person() {
         </Stack>
       </Flex>
 
-      <Slide direction="bottom" in={isOpenAlert} style={{ zIndex: 10 }}>
-        {state?.isCreated && (
-          <Alert status="success" display="flex" justifyContent="center">
-            <AlertIcon />
-            Cadastro realizado com sucesso.
-            <CloseButton onClick={() => onToggle()} />
-          </Alert>
-        )}
-      </Slide>
+      <Success
+        onToggle={onToggle}
+        isOpenAlert={isOpenAlert}
+        isCreated={state?.isCreated}
+      />
     </>
   )
 }

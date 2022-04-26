@@ -1,15 +1,11 @@
 import {
-  Alert,
-  AlertIcon,
   Button,
-  CloseButton,
   Flex,
   Heading,
   Radio,
   RadioGroup,
   SimpleGrid,
-  Stack,
-  Slide
+  Stack
 } from '@chakra-ui/react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import * as yup from 'yup'
@@ -19,6 +15,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Input } from '../components/Form/Input'
 import { useEffect, useState } from 'react'
 import { api } from '../services/api'
+import { Warning } from '../components/Alert/Waring'
 
 interface FieldProps {
   id: number
@@ -237,13 +234,7 @@ export function Register() {
         </Stack>
       </Flex>
 
-      <Slide direction="bottom" in={isOpen} style={{ zIndex: 10 }}>
-        <Alert status="error">
-          <AlertIcon />
-          There was an error processing your request
-          <CloseButton onClick={() => onToggle()} />
-        </Alert>
-      </Slide>
+      <Warning isOpen={isOpen} onToggle={onToggle} />
     </>
   )
 }
