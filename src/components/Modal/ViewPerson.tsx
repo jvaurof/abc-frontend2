@@ -11,12 +11,27 @@ import {
   Td
 } from '@chakra-ui/react'
 
+interface FieldProps {
+  id: number
+  name: string
+  login: string
+  password: string
+  confirmPassword: string
+  phone: string
+  cpf: string
+  rg: string
+  cnpj: string
+  state_registration: string
+  type: 'natural' | 'juridical'
+}
+
 interface ViewPersonProps {
   isOpen: boolean
   onClose: () => void
+  person: FieldProps
 }
 
-export function ViewPerson({ isOpen, onClose }: ViewPersonProps) {
+export function ViewPerson({ isOpen, onClose, person }: ViewPersonProps) {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -27,28 +42,39 @@ export function ViewPerson({ isOpen, onClose }: ViewPersonProps) {
           <Table variant="simple">
             <Tr>
               <Th>Nome</Th>
-              <Td>João</Td>
+              <Td>{person.name}</Td>
             </Tr>
             <Tr>
               <Th>Login</Th>
-              <Td>João</Td>
-            </Tr>
-            <Tr>
-              <Th>Senha</Th>
-              <Td>João</Td>
+              <Td>{person.login}</Td>
             </Tr>
             <Tr>
               <Th>Telefone</Th>
-              <Td>João</Td>
+              <Td>{person.phone}</Td>
             </Tr>
-            <Tr>
-              <Th>CPF</Th>
-              <Td>João</Td>
-            </Tr>
-            <Tr>
-              <Th>RG</Th>
-              <Td>João</Td>
-            </Tr>
+            {person.type === 'natural' ? (
+              <>
+                <Tr>
+                  <Th>CPF</Th>
+                  <Td>{person.cpf}</Td>
+                </Tr>
+                <Tr>
+                  <Th>RG</Th>
+                  <Td>{person.rg}</Td>
+                </Tr>
+              </>
+            ) : (
+              <>
+                <Tr>
+                  <Th>CNPJ</Th>
+                  <Td>{person.cnpj}</Td>
+                </Tr>
+                <Tr>
+                  <Th>Inscrição estadual</Th>
+                  <Td>{person.state_registration}</Td>
+                </Tr>
+              </>
+            )}
           </Table>
         </ModalBody>
       </ModalContent>

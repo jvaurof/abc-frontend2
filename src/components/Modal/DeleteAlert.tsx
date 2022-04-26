@@ -14,9 +14,10 @@ import {
 interface DeleteAlertProps {
   isOpen: boolean
   onClose: () => void
+  onDelete: () => void
 }
 
-export function DeleteAlert({ isOpen, onClose }: DeleteAlertProps) {
+export function DeleteAlert({ isOpen, onClose, onDelete }: DeleteAlertProps) {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -46,7 +47,9 @@ export function DeleteAlert({ isOpen, onClose }: DeleteAlertProps) {
           <Button colorScheme="blue" mr={3} onClick={onClose}>
             Cancelar
           </Button>
-          <Button colorScheme="red">Confirmar</Button>
+          <Button colorScheme="red" onClick={onDelete}>
+            Confirmar
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

@@ -9,14 +9,10 @@ import {
   Stack
 } from '@chakra-ui/react'
 import { useState } from 'react'
-import { RiAddLine, RiDeleteBin4Line, RiSearchLine } from 'react-icons/ri'
+import { RiAddLine, RiSearchLine } from 'react-icons/ri'
 import { Link } from 'react-router-dom'
 
-interface HeaderProps {
-  onOpenDeleteAlert: () => void
-}
-
-export function Header({ onOpenDeleteAlert }: HeaderProps) {
+export function Header() {
   const [search, setSearch] = useState('')
 
   return (
@@ -55,13 +51,6 @@ export function Header({ onOpenDeleteAlert }: HeaderProps) {
           leftIcon={<Icon as={RiAddLine} fontSize="md" />}
         >
           Cadastrar novo
-        </Button>
-        <Button
-          size="sm"
-          onClick={onOpenDeleteAlert}
-          leftIcon={<Icon as={RiDeleteBin4Line} fontSize="md" />}
-        >
-          Excluir
         </Button>
       </Stack>
     </Stack>

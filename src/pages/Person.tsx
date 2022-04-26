@@ -1,27 +1,35 @@
-import { Flex, Stack, useDisclosure } from '@chakra-ui/react'
+import {
+  Alert,
+  AlertIcon,
+  CloseButton,
+  Flex,
+  Slide,
+  Stack,
+  useDisclosure
+} from '@chakra-ui/react'
+import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Header } from '../components/Header'
-import { DeleteAlert } from '../components/Modal/DeleteAlert'
-import { ViewPerson } from '../components/Modal/ViewPerson'
 import { MyTable } from '../components/MyTable'
 import { Pagination } from '../components/Pagination'
 
-export function Person() {
-  const {
-    isOpen: isOpenDeleteAlert,
-    onOpen: onOpenDeleteAlert,
-    onClose: onCloseDeleteAlert
-  } = useDisclosure()
+interface LocationStateProps {
+  isCreated: boolean
+}
 
-  const {
-    isOpen: isOpenViewPerson,
-    onOpen: onOpenViewPerson,
-    onClose: onCloseViewPerson
-  } = useDisclosure()
+export function Person() {
+  const { isOpen: isOpenAlert, onToggle } = useDisclosure()
+  const location = useLocation()
+  const state = location.state as LocationStateProps
+
+  useEffect(() => {
+    if (state?.isCreated) {
+      return onToggle()
+    }
+  }, [state?.isCreated])
 
   return (
     <>
-      <DeleteAlert onClose={onCloseDeleteAlert} isOpen={isOpenDeleteAlert} />
-      <ViewPerson onClose={onCloseViewPerson} isOpen={isOpenViewPerson} />
       <Flex width="100%" height="100%" justify="center" py="10">
         <Stack
           bg="white"
@@ -32,11 +40,21 @@ export function Person() {
           borderRadius="md"
           spacing="10"
         >
-          <Header onOpenDeleteAlert={onOpenDeleteAlert} />
-          <MyTable onOpenViewPerson={onOpenViewPerson} />
+          <Header />
+          <MyTable />
           <Pagination />
         </Stack>
       </Flex>
+
+      <Slide direction="bottom" in={isOpenAlert} style={{ zIndex: 10 }}>
+        {state?.isCreated && (
+          <Alert status="success" display="flex" justifyContent="center">
+            <AlertIcon />
+            Cadastro realizado com sucesso.
+            <CloseButton onClick={() => onToggle()} />
+          </Alert>
+        )}
+      </Slide>
     </>
   )
 }

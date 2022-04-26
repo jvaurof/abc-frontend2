@@ -15,12 +15,13 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useDisclosure } from '@chakra-ui/hooks'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Input } from '../components/Form/Input'
 import { useEffect, useState } from 'react'
 import { api } from '../services/api'
 
 interface FieldProps {
+  id: number
   name: string
   login: string
   password: string
@@ -28,27 +29,42 @@ interface FieldProps {
   phone: string
   cpf: string
   rg: string
-  person_type: string
+  cnpj: string
+  state_registration: string
+  type: 'natural' | 'juridical'
 }
 
 interface LocationStateProps {
   isEditing: boolean
+  data: FieldProps
 }
 
-const formSchema = yup.object().shape({
-  name: yup.string().required('O campo Nome é obrigatório'),
-  login: yup.string().required('O campo Login é obrigatório'),
-  password: yup.string().required('O campo Senha é obrigatório'),
-  confirmPassword: yup
-    .string()
-    .required('O campo Confirmar Senha é obrigatório')
-    .oneOf([yup.ref('password'), null], 'As senhas devem ser iguais'),
-  phone: yup.string().required('O campo Telefone é obrigatório'),
-  cpf: yup.string().required('O campo CPF é obrigatório'),
-  rg: yup.string().required('O campo RG é obrigatório')
-})
-
 export function Signup() {
+  const [isPersonNatural, setIsPersonNatural] = useState(true)
+
+  const formSchema = yup.object().shape({
+    name: yup.string().required('O campo Nome é obrigatório'),
+    login: yup.string().required('O campo Login é obrigatório'),
+    password: yup.string().required('O campo Senha é obrigatório'),
+    confirmPassword: yup
+      .string()
+      .required('O campo Confirmar Senha é obrigatório')
+      .oneOf([yup.ref('password'), null], 'As senhas devem ser iguais'),
+    phone: yup.string().required('O campo Telefone é obrigatório'),
+    cpf: isPersonNatural
+      ? yup.string().required('O campo CPF é obrigatório')
+      : yup.string(),
+    rg: isPersonNatural
+      ? yup.string().required('O campo RG é obrigatório')
+      : yup.string(),
+    cnpj: !isPersonNatural
+      ? yup.string().required('O campo CNPJ é obrigatório')
+      : yup.string(),
+    state_registration: !isPersonNatural
+      ? yup.string().required('O campo Inscrição estadual é obrigatório')
+      : yup.string()
+  })
+
   const { register, handleSubmit, formState, setValue } = useForm<FieldProps>({
     resolver: yupResolver(formSchema)
   })
@@ -57,22 +73,40 @@ export function Signup() {
   const location = useLocation()
   const state = location.state as LocationStateProps
   const [statusResponse, setStatusResponse] = useState(0)
+  const navigate = useNavigate()
 
   const handleSignUp: SubmitHandler<FieldProps> = async values => {
-    const response = await api.post('/person', values)
+    console.log('oi')
+    let response
+    if (state.isEditing) {
+      response = await api.put(`/person/${state.data.id}`, values)
+    } else {
+      response = await api.post('/person', values)
+    }
+
+    if (response.status === 200) {
+      navigate('/person', { state: { isCreated: true } })
+    }
+
     setStatusResponse(response.status)
+
     onToggle()
   }
 
   useEffect(() => {
     if (state && state.isEditing) {
-      setValue('name', 'abc')
-      setValue('login', 'log')
-      setValue('password', '123')
-      setValue('confirmPassword', '123')
-      setValue('phone', '1235')
-      setValue('rg', '999')
-      setValue('cpf', '544')
+      setValue('name', state.data.name)
+      setValue('login', state.data.login)
+      setValue('password', state.data.password)
+      setValue('confirmPassword', state.data.password)
+      setValue('phone', state.data.phone)
+      setValue('rg', state.data.rg ?? '')
+      setValue('cpf', state.data.cpf ?? '')
+      setValue('cnpj', state.data.cnpj ?? '')
+      setValue('state_registration', state.data.state_registration ?? '')
+      setValue('type', state.data.type)
+
+      setIsPersonNatural(state.data.type === 'natural')
     }
   }, [state, setValue])
 
@@ -93,12 +127,25 @@ export function Signup() {
         >
           <Heading>Cadastre-se</Heading>
 
-          <RadioGroup defaultValue={state.isEditing ? 'natural' : 'natural'}>
+          <RadioGroup
+            defaultValue={state.isEditing ? state.data.type : 'natural'}
+            onChange={() => {
+              setIsPersonNatural(!isPersonNatural)
+            }}
+          >
             <Stack direction="row">
-              <Radio value="natural" {...register('person_type')}>
+              <Radio
+                isReadOnly={state.isEditing}
+                value="natural"
+                {...register('type')}
+              >
                 Pessoa Física
               </Radio>
-              <Radio value="juridical" {...register('person_type')}>
+              <Radio
+                isReadOnly={state.isEditing}
+                value="juridical"
+                {...register('type')}
+              >
                 Pessoa Jurídica
               </Radio>
             </Stack>
@@ -138,13 +185,39 @@ export function Signup() {
               errors={errors.phone}
               register={register}
             />
-            <Input
-              id="cpf"
-              label="CPF"
-              errors={errors.cpf}
-              register={register}
-            />
-            <Input id="rg" label="RG" errors={errors.rg} register={register} />
+
+            {isPersonNatural ? (
+              <>
+                <Input
+                  id="cpf"
+                  label="CPF"
+                  errors={errors.cpf}
+                  register={register}
+                />
+
+                <Input
+                  id="rg"
+                  label="RG"
+                  errors={errors.rg}
+                  register={register}
+                />
+              </>
+            ) : (
+              <>
+                <Input
+                  id="cnpj"
+                  label="CNPJ"
+                  errors={errors.cnpj}
+                  register={register}
+                />
+                <Input
+                  id="state_registration"
+                  label="Inscrição estadual"
+                  errors={errors.state_registration}
+                  register={register}
+                />
+              </>
+            )}
           </SimpleGrid>
           <Stack direction="row">
             <Button
@@ -169,14 +242,6 @@ export function Signup() {
       </Flex>
 
       <Slide direction="bottom" in={isOpen} style={{ zIndex: 10 }}>
-        {statusResponse === 200 && (
-          <Alert status="success" display="flex" justifyContent="center">
-            <AlertIcon />
-            Cadastro realizado com sucesso.
-            <CloseButton onClick={() => onToggle()} />
-          </Alert>
-        )}
-
         {statusResponse !== 200 && (
           <Alert status="error">
             <AlertIcon />
