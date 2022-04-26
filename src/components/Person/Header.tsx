@@ -2,24 +2,29 @@ import {
   Button,
   Heading,
   Icon,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
+  // Input,
+  // InputGroup,
+  // InputLeftElement,
+  // InputRightElement,
   Stack
 } from '@chakra-ui/react'
-import { useState } from 'react'
-import { RiAddLine, RiSearchLine } from 'react-icons/ri'
+// import { useState } from 'react'
+import { RiAddLine } from 'react-icons/ri'
 import { Link } from 'react-router-dom'
 
 export function Header() {
-  const [search, setSearch] = useState('')
+  // const [search, setSearch] = useState('')
 
   return (
-    <Stack direction="row" spacing="16">
+    <Stack
+      direction="row"
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+    >
       <Heading>Pessoa</Heading>
 
-      <InputGroup>
+      {/* <InputGroup>
         <InputLeftElement pointerEvents="none">
           <Icon as={RiSearchLine} fontSize="md" />
         </InputLeftElement>
@@ -40,7 +45,7 @@ export function Header() {
             Buscar
           </Button>
         </InputRightElement>
-      </InputGroup>
+      </InputGroup> */}
 
       <Stack direction="row">
         <Button

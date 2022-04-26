@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Header } from '../components/Person/Header'
 import { DataTable } from '../components/Person/DataTable'
-import { Pagination } from '../components/Person/Pagination'
+// import { Pagination } from '../components/Person/Pagination'
 import { Success } from '../components/Alert/Success'
 
 interface LocationStateProps {
@@ -35,7 +35,7 @@ export function Person() {
         >
           <Header />
           <DataTable />
-          <Pagination />
+          {/* <Pagination /> */}
         </Stack>
       </Flex>
 
