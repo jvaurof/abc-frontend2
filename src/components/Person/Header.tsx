@@ -45,7 +45,7 @@ export function Header() {
       <Stack direction="row">
         <Button
           as={Link}
-          to="/signup"
+          to="/register"
           state={{ isEditing: false }}
           size="sm"
           leftIcon={<Icon as={RiAddLine} fontSize="md" />}

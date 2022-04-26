@@ -36,7 +36,9 @@ export function ViewPerson({ isOpen, onClose, person }: ViewPersonProps) {
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent pb="6">
-        <ModalHeader>Modal Title</ModalHeader>
+        <ModalHeader>
+          {person.type === 'natural' ? 'Pessoa Física' : 'Pessoa Jurídica'}
+        </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Table variant="simple">

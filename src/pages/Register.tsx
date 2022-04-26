@@ -39,7 +39,7 @@ interface LocationStateProps {
   data: FieldProps
 }
 
-export function Signup() {
+export function Register() {
   const [isPersonNatural, setIsPersonNatural] = useState(true)
 
   const formSchema = yup.object().shape({
@@ -72,11 +72,9 @@ export function Signup() {
   const { isOpen, onToggle } = useDisclosure()
   const location = useLocation()
   const state = location.state as LocationStateProps
-  const [statusResponse, setStatusResponse] = useState(0)
   const navigate = useNavigate()
 
   const handleSignUp: SubmitHandler<FieldProps> = async values => {
-    console.log('oi')
     let response
     if (state.isEditing) {
       response = await api.put(`/person/${state.data.id}`, values)
@@ -85,10 +83,8 @@ export function Signup() {
     }
 
     if (response.status === 200) {
-      navigate('/person', { state: { isCreated: true } })
+      navigate('/', { state: { isCreated: true } })
     }
-
-    setStatusResponse(response.status)
 
     onToggle()
   }
@@ -125,7 +121,7 @@ export function Signup() {
           spacing="6"
           onSubmit={handleSubmit(handleSignUp)}
         >
-          <Heading>Cadastre-se</Heading>
+          <Heading>{state.isEditing ? 'Editar' : 'Cadastrar'}</Heading>
 
           <RadioGroup
             defaultValue={state.isEditing ? state.data.type : 'natural'}
@@ -222,7 +218,7 @@ export function Signup() {
           <Stack direction="row">
             <Button
               as={Link}
-              to="/person"
+              to="/"
               isLoading={formState.isSubmitting}
               colorScheme="blue"
               flex={1}
@@ -242,13 +238,11 @@ export function Signup() {
       </Flex>
 
       <Slide direction="bottom" in={isOpen} style={{ zIndex: 10 }}>
-        {statusResponse !== 200 && (
-          <Alert status="error">
-            <AlertIcon />
-            There was an error processing your request
-            <CloseButton onClick={() => onToggle()} />
-          </Alert>
-        )}
+        <Alert status="error">
+          <AlertIcon />
+          There was an error processing your request
+          <CloseButton onClick={() => onToggle()} />
+        </Alert>
       </Slide>
     </>
   )

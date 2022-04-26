@@ -13,9 +13,9 @@ import {
 import { useEffect, useState } from 'react'
 import { RiPencilLine, RiEyeLine, RiDeleteBin4Line } from 'react-icons/ri'
 import { Link } from 'react-router-dom'
-import { api } from '../services/api'
-import { DeleteAlert } from '../components/Modal/DeleteAlert'
-import { ViewPerson } from '../components/Modal/ViewPerson'
+import { api } from '../../services/api'
+import { DeleteAlert } from '../Modal/DeleteAlert'
+import { ViewPerson } from '../Modal/ViewPerson'
 
 interface FieldProps {
   id: number
@@ -31,7 +31,7 @@ interface FieldProps {
   type: 'natural' | 'juridical'
 }
 
-export function MyTable() {
+export function DataTable() {
   const [data, setData] = useState([])
 
   const fetchData = async () => {
@@ -108,7 +108,7 @@ export function MyTable() {
 
                   <Button
                     as={Link}
-                    to="/signup"
+                    to="/register"
                     state={{ isEditing: true, data: person }}
                     size="sm"
                     leftIcon={<Icon as={RiPencilLine} fontSize="md" />}

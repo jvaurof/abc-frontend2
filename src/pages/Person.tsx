@@ -9,9 +9,9 @@ import {
 } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Header } from '../components/Header'
-import { MyTable } from '../components/MyTable'
-import { Pagination } from '../components/Pagination'
+import { Header } from '../components/Person/Header'
+import { DataTable } from '../components/Person/DataTable'
+import { Pagination } from '../components/Person/Pagination'
 
 interface LocationStateProps {
   isCreated: boolean
@@ -41,7 +41,7 @@ export function Person() {
           spacing="10"
         >
           <Header />
-          <MyTable />
+          <DataTable />
           <Pagination />
         </Stack>
       </Flex>
